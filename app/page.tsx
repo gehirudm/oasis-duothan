@@ -36,48 +36,47 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-12">Platform Features</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Card>
+            <Card className="neon-box">
               <CardHeader className="text-center">
-                <Trophy className="h-12 w-12 text-primary mx-auto mb-4" />
-                <CardTitle>Hackathon Management</CardTitle>
+                <Trophy className="h-12 w-12 text-green mx-auto mb-4" />
+                <CardTitle className="font-orbitron">Hackathon Management</CardTitle>
               </CardHeader>
               <CardContent>
-                <CardDescription>
-                  Create and manage hackathons with custom rules, deadlines, and team sizes.
+                <CardDescription><p className="text-center">Create and manage hackathons with custom rules, deadlines, and team sizes.</p>
+                  
                 </CardDescription>
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="neon-box">
               <CardHeader className="text-center">
-                <Users className="h-12 w-12 text-primary mx-auto mb-4" />
-                <CardTitle>Team Registration</CardTitle>
+                <Users className="h-12 w-12 text-green mx-auto mb-4" />
+                <CardTitle className="font-orbitron">Team Registration</CardTitle>
               </CardHeader>
               <CardContent>
-                <CardDescription>Easy team formation with member management and role assignments.</CardDescription>
+                <CardDescription><p className="text-center">Easy team formation with member management and role assignments.</p></CardDescription>
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="neon-box">
               <CardHeader className="text-center">
-                <Calendar className="h-12 w-12 text-primary mx-auto mb-4" />
-                <CardTitle>Event Scheduling</CardTitle>
+                <Calendar className="h-12 w-12 text-green mx-auto mb-4" />
+                <CardTitle className="font-orbitron">Event Scheduling</CardTitle>
               </CardHeader>
               <CardContent>
-                <CardDescription>
-                  Set registration deadlines, event dates, and manage timelines effectively.
+                <CardDescription><p className="text-center">Set registration deadlines, event dates, and manage timelines effectively.</p>
                 </CardDescription>
               </CardContent>
             </Card>
 
-            <Card>
+            <Card className="neon-box">
               <CardHeader className="text-center">
-                <Award className="h-12 w-12 text-primary mx-auto mb-4" />
-                <CardTitle>Admin Dashboard</CardTitle>
+                <Award className="h-12 w-12 text-green mx-auto mb-4" />
+                <CardTitle className="font-orbitron">Admin Dashboard</CardTitle>
               </CardHeader>
               <CardContent>
-                <CardDescription>
-                  Comprehensive admin tools for managing events, teams, and participants.
+                <CardDescription><p className="text-center">Comprehensive admin tools for managing events, teams, and participants.</p>
+                  
                 </CardDescription>
               </CardContent>
             </Card>

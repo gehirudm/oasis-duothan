@@ -176,3 +176,21 @@ p {
 h1, h2{
   font-family: 'Orbitron', sans-serif;
 }
+
+.neon-box {
+  background-color: #1a1a2e96; /* dark card-like bg */
+  border: 2px solid #39ff14; /* neon green border */
+  border-radius: 12px;
+  padding: 1.5rem;
+  color: #e0f2f1;
+  box-shadow:
+    0 0 5px #39ff14,
+    0 0 15px #39ff14;
+  transition: box-shadow 0.3s ease;
+}
+
+.neon-box:hover {
+  box-shadow:
+    0 0 10px #39ff14,
+    0 0 20px #39ff14;
+}
