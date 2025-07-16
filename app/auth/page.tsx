@@ -5,10 +5,10 @@ import type React from "react"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { useAuth } from "@/contexts/auth-context"
 import { useRouter } from "next/navigation"
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth"
 import { auth } from "@/lib/firebase"
+import { useAuth } from "@/lib/auth-context"
 
 export default function AuthPage() {
   const [email, setEmail] = useState("")
@@ -17,7 +17,7 @@ export default function AuthPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   
-  const { signIn } = useAuth()
+  const { signInWithGoogle } = useAuth()
   const router = useRouter()
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -31,7 +31,7 @@ export default function AuthPage() {
     try {
       setLoading(true)
       setError(null)
-      await signIn(email, password)
+      await signInWithGoogle(email, password)
       router.push("/dashboard")
     } catch (err) {
       console.error("Login error:", err)
