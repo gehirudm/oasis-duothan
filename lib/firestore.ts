@@ -154,7 +154,28 @@ export const createTeam = async (
     totalScore: 0,
     createdAt: Timestamp.now(),
   })
-  return docRef.id
+
+  // Create invitations for each team member
+  const teamId = docRef.id;
+  const invitationPromises = team.members.map(member => {
+    if (!member.email) return null;
+
+    return addDoc(collection(db, "teamInvitations"), {
+      teamId,
+      teamName: team.name,
+      inviterName: team.leaderName,
+      inviterEmail: team.leaderEmail,
+      inviteeEmail: member.email,
+      role: member.role || "",
+      status: "pending",
+      createdAt: Timestamp.now(),
+    });
+  });
+
+  // Wait for all invitations to be created
+  await Promise.all(invitationPromises.filter(Boolean));
+
+  return teamId;
 }
 
 export const getTeams = async () => {
@@ -184,32 +205,32 @@ export const getTeamById = async (teamId: string) => {
 export const getUserTeam = async (hackathonId: string, userId: string) => {
   // First check if user is a team leader for this hackathon
   const leaderTeamsQuery = query(
-    collection(db, "teams"), 
+    collection(db, "teams"),
     where("hackathonId", "==", hackathonId),
     where("leaderId", "==", userId)
   )
   const leaderTeamsSnapshot = await getDocs(leaderTeamsQuery)
-  
+
   if (!leaderTeamsSnapshot.empty) {
     // User is a leader of a team in this hackathon
     const teamDoc = leaderTeamsSnapshot.docs[0]
     return { id: teamDoc.id, ...teamDoc.data() } as Team
   }
-  
+
   // If not a leader, check if user is a member of any team in this hackathon
   const teamsQuery = query(
     collection(db, "teams"),
     where("hackathonId", "==", hackathonId)
   )
   const teamsSnapshot = await getDocs(teamsQuery)
-  
+
   for (const teamDoc of teamsSnapshot.docs) {
     const team = teamDoc.data() as Team
     if (team.members.some(member => member.id === userId || member.email === userId)) {
       return { id: teamDoc.id, ...teamDoc.data() } as Team
     }
   }
-  
+
   // User is not part of any team for this hackathon
   return null
 }

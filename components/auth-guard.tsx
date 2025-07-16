@@ -5,9 +5,10 @@ import { useEffect, useState } from "react"
 
 import { useAuth } from "@/lib/auth-context"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { LogIn } from "lucide-react"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { ArrowRight, LogIn } from "lucide-react"
 import { getAdminEmails } from "@/app/actions/admin-actions"
+import { useRouter } from "next/navigation"
 
 interface AuthGuardProps {
   children: React.ReactNode
@@ -15,9 +16,10 @@ interface AuthGuardProps {
 }
 
 export function AuthGuard({ children, adminOnly = false }: AuthGuardProps) {
-  const { user, loading, signInWithGoogle } = useAuth()
+  const { user, loading } = useAuth()
   const [adminEmails, setAdminEmails] = useState<string[]>([])
   const [checkingAdmin, setCheckingAdmin] = useState(adminOnly)
+  const router = useRouter()
 
   useEffect(() => {
     if (adminOnly && user) {
@@ -31,7 +33,7 @@ export function AuthGuard({ children, adminOnly = false }: AuthGuardProps) {
           setCheckingAdmin(false)
         }
       }
-      
+
       fetchAdminEmails()
     } else {
       setCheckingAdmin(false)
@@ -54,12 +56,16 @@ export function AuthGuard({ children, adminOnly = false }: AuthGuardProps) {
             <CardTitle>Welcome to HackPlatform</CardTitle>
             <CardDescription>Sign in to access the hackathon platform</CardDescription>
           </CardHeader>
-          <CardContent>
-            <Button onClick={signInWithGoogle} className="w-full" size="lg">
-              <LogIn className="mr-2 h-4 w-4" />
-              Sign in with Google
+          <CardFooter className="flex justify-center pt-4">
+            <Button
+              variant="outline"
+              onClick={() => router.push('/auth/signin')}
+              className="flex items-center"
+            >
+              Go to Sign In Page
+              <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
-          </CardContent>
+          </CardFooter>
         </Card>
       </div>
     )

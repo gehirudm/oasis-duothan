@@ -3,11 +3,11 @@
 import { useEffect, useState } from "react"
 import { AuthGuard } from "@/components/auth-guard"
 import { useAuth } from "@/lib/auth-context"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Users, Crown, Mail, Calendar, ExternalLink } from "lucide-react"
+import { Users, Crown, Mail, Calendar, ExternalLink, Plus, Eye } from "lucide-react"
 import {
   getUserTeams,
   getTeamInvitations,
@@ -100,9 +100,17 @@ export default function TeamsPage() {
     <AuthGuard>
       <div className="min-h-screen bg-gray-50 py-8">
         <div className="max-w-6xl mx-auto px-4">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">My Teams</h1>
-            <p className="text-gray-600">Manage your hackathon teams and invitations.</p>
+          <div className="flex justify-between items-center mb-8">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">My Teams</h1>
+              <p className="text-gray-600">Manage your hackathon teams and invitations.</p>
+            </div>
+            <Link href="/teams/create">
+              <Button>
+                <Plus className="h-4 w-4 mr-2" />
+                Create Team
+              </Button>
+            </Link>
           </div>
 
           {/* Team Invitations */}
@@ -125,7 +133,7 @@ export default function TeamsPage() {
                       <div>
                         <h4 className="font-semibold">{invitation.teamName}</h4>
                         <p className="text-sm text-gray-600">
-                          Invited by {invitation.inviterName} • {invitation.hackathonTitle}
+                          Invited by {invitation.inviterName} • {invitation.hackathonTitle || "Hackathon"}
                         </p>
                         <p className="text-xs text-gray-500 mt-1">
                           Invited {invitation.createdAt.toDate().toLocaleDateString()}
@@ -170,12 +178,20 @@ export default function TeamsPage() {
                   <Users className="h-12 w-12 text-gray-400 mx-auto mb-4" />
                   <h3 className="text-lg font-semibold mb-2">No Teams Yet</h3>
                   <p className="text-gray-600 mb-4">Join a hackathon to create or join a team.</p>
-                  <Link href="/hackathons">
-                    <Button>
-                      <ExternalLink className="h-4 w-4 mr-2" />
-                      Browse Hackathons
-                    </Button>
-                  </Link>
+                  <div className="flex justify-center gap-4">
+                    <Link href="/hackathons">
+                      <Button>
+                        <ExternalLink className="h-4 w-4 mr-2" />
+                        Browse Hackathons
+                      </Button>
+                    </Link>
+                    <Link href="/teams/create">
+                      <Button variant="outline">
+                        <Plus className="h-4 w-4 mr-2" />
+                        Create Team
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
               ) : (
                 <div className="grid md:grid-cols-2 gap-6">
@@ -247,11 +263,29 @@ export default function TeamsPage() {
                           </div>
                         </div>
                       </CardContent>
+                      <CardFooter>
+                        <Link href={`/teams/${team.id}`} className="w-full">
+                          <Button variant="outline" className="w-full">
+                            <Eye className="h-4 w-4 mr-2" />
+                            View Team
+                          </Button>
+                        </Link>
+                      </CardFooter>
                     </Card>
                   ))}
                 </div>
               )}
             </CardContent>
+            {teams.length > 0 && (
+              <CardFooter className="flex justify-center pt-4 pb-6">
+                <Link href="/teams/create">
+                  <Button variant="outline">
+                    <Plus className="h-4 w-4 mr-2" />
+                    Create Another Team
+                  </Button>
+                </Link>
+              </CardFooter>
+            )}
           </Card>
         </div>
       </div>

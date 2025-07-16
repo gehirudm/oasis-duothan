@@ -5,7 +5,7 @@ import { AuthGuard } from "@/components/auth-guard"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Plus, Users, Calendar, Trophy } from "lucide-react"
+import { Plus, Users, Calendar, Trophy, Code } from "lucide-react"
 import { getHackathons, getTeamsByHackathon, type Hackathon } from "@/lib/firestore"
 import Link from "next/link"
 
@@ -58,12 +58,20 @@ export default function AdminPage() {
               <h1 className="text-3xl font-bold text-gray-900 mb-2">Admin Dashboard</h1>
               <p className="text-gray-600">Manage hackathons and view registrations.</p>
             </div>
-            <Link href="/admin/create-hackathon">
-              <Button>
-                <Plus className="h-4 w-4 mr-2" />
-                Create Hackathon
-              </Button>
-            </Link>
+            <div className="flex gap-3">
+              <Link href="/admin/challenges">
+                <Button variant="outline">
+                  <Code className="h-4 w-4 mr-2" />
+                  Manage Challenges
+                </Button>
+              </Link>
+              <Link href="/admin/create-hackathon">
+                <Button>
+                  <Plus className="h-4 w-4 mr-2" />
+                  Create Hackathon
+                </Button>
+              </Link>
+            </div>
           </div>
 
           {/* Stats Cards */}
