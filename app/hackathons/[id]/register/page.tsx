@@ -13,8 +13,9 @@ import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
 import { Trash2, Plus } from "lucide-react"
 import { getDoc, doc } from "firebase/firestore"
-import { db, createTeam, getUserTeam, type Hackathon, type TeamMember } from "@/lib/firestore"
+import { createTeam, getUserTeam, Team, type Hackathon, type TeamMember } from "@/lib/firestore"
 import { toast } from "sonner"
+import { db } from "@/lib/firebase"
 
 export default function RegisterPage() {
   const params = useParams()
@@ -23,7 +24,7 @@ export default function RegisterPage() {
   const hackathonId = params.id as string
 
   const [hackathon, setHackathon] = useState<Hackathon | null>(null)
-  const [existingTeam, setExistingTeam] = useState(null)
+  const [existingTeam, setExistingTeam] = useState<Team | null>(null)
   const [loading, setLoading] = useState(true)
   const [submitting, setSubmitting] = useState(false)
 

@@ -4,7 +4,7 @@ import { useAuth } from "@/lib/auth-context"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { LogOut, Settings, User } from "lucide-react"
+import { LogOut, Settings, User, Users } from "lucide-react"
 import Link from "next/link"
 
 export function Navbar() {
@@ -24,6 +24,9 @@ export function Navbar() {
             <Link href="/hackathons">
               <Button variant="ghost">Hackathons</Button>
             </Link>
+            <Link href="/teams">
+              <Button variant="ghost">My Teams</Button>
+            </Link>
 
             {user && (
               <DropdownMenu>
@@ -41,6 +44,18 @@ export function Navbar() {
                     <span>{user.displayName || user.email}</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
+                    <Link href="/auth/profile">
+                      <User className="mr-2 h-4 w-4" />
+                      <span>My Profile</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/teams">
+                      <Users className="mr-2 h-4 w-4" />
+                      <span>My Teams</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
                     <Link href="/admin">
                       <Settings className="mr-2 h-4 w-4" />
                       <span>Admin Dashboard</span>
@@ -52,6 +67,12 @@ export function Navbar() {
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
+            )}
+
+            {!user && (
+              <Link href="/auth/signin">
+                <Button>Sign In</Button>
+              </Link>
             )}
           </div>
         </div>

@@ -141,7 +141,7 @@ export default function AdminPage() {
                             View Teams
                           </Button>
                         </Link>
-                        <Link href={`/admin/hackathons/${hackathon.id}/edit`}>
+                        <Link href={`/admin/hackathons/${hackathon.id}`}>
                           <Button variant="outline" size="sm">
                             Edit
                           </Button>
