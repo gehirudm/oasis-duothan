@@ -22,6 +22,8 @@ export interface Challenge {
   buildathonTask: string
   isActive: boolean
   createdAt: Timestamp
+  input?: string 
+  output?: string
 }
 
 export interface Team {
@@ -84,6 +86,7 @@ export interface CodeSubmission {
   status?: string
   executionTime?: number
   memory?: number
+  isCorrect?: boolean
   createdAt: Timestamp
 }
 

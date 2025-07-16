@@ -26,6 +26,8 @@ export default function CreateChallengePage() {
     flag: "",
     buildathonTask: "",
     isActive: true,
+    input: "",
+    output: "",
   })
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -46,6 +48,8 @@ export default function CreateChallengePage() {
         flag: formData.flag,
         buildathonTask: formData.buildathonTask,
         isActive: formData.isActive,
+        input: formData.input,
+        output: formData.output,
       })
 
       toast.success("Challenge created successfully!")
@@ -114,6 +118,34 @@ export default function CreateChallengePage() {
                     placeholder="Input/output constraints..."
                     rows={3}
                   />
+                </div>
+
+                <div>
+                  <Label htmlFor="input">Sample Input</Label>
+                  <Textarea
+                    id="input"
+                    value={formData.input}
+                    onChange={(e) => handleInputChange("input", e.target.value)}
+                    placeholder="Sample input for validation..."
+                    rows={3}
+                  />
+                  <p className="text-sm text-gray-500 mt-1">
+                    This will be used to validate participant submissions
+                  </p>
+                </div>
+
+                <div>
+                  <Label htmlFor="output">Expected Output</Label>
+                  <Textarea
+                    id="output"
+                    value={formData.output}
+                    onChange={(e) => handleInputChange("output", e.target.value)}
+                    placeholder="Expected output for validation..."
+                    rows={3}
+                  />
+                  <p className="text-sm text-gray-500 mt-1">
+                    The exact output that should be produced for the sample input
+                  </p>
                 </div>
 
                 <div>
