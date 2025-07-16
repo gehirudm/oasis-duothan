@@ -2,209 +2,269 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
+import { useAuth } from "@/lib/auth-context"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Zap, ArrowLeft } from "lucide-react"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import { CheckCircle, AlertCircle, User } from "lucide-react"
+import { getUserProfile, updateUserProfile, checkUsernameAvailability, type UserProfile } from "@/lib/firestore"
+import { toast } from "sonner"
 
-export default function RegisterPage() {
+export default function CompleteProfilePage() {
+  const { user, loading } = useAuth()
+  const router = useRouter()
+  const [profile, setProfile] = useState<UserProfile | null>(null)
+  const [saving, setSaving] = useState(false)
+  const [checkingUsername, setCheckingUsername] = useState(false)
+  const [usernameAvailable, setUsernameAvailable] = useState<boolean | null>(null)
   const [formData, setFormData] = useState({
     username: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
+    displayName: "",
+    bio: "",
+    skills: "",
+    github: "",
+    linkedin: "",
   })
-  const [agreeToTerms, setAgreeToTerms] = useState(false)
-  const [isHuman, setIsHuman] = useState(false)
 
-  const handleInputChange = (field: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }))
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (!user) return
+
+      try {
+        const userProfile = await getUserProfile(user.uid)
+        if (userProfile) {
+          setProfile(userProfile)
+          if (userProfile.profileCompleted) {
+            router.push("/dashboard")
+            return
+          }
+          setFormData({
+            username: userProfile.username || "",
+            displayName: userProfile.displayName || user.displayName || "",
+            bio: userProfile.bio || "",
+            skills: userProfile.skills?.join(", ") || "",
+            github: userProfile.github || "",
+            linkedin: userProfile.linkedin || "",
+          })
+        } else {
+          setFormData((prev) => ({
+            ...prev,
+            displayName: user.displayName || "",
+          }))
+        }
+      } catch (error) {
+        console.error("Error fetching profile:", error)
+      }
+    }
+
+    if (user && !loading) {
+      fetchProfile()
+    }
+  }, [user, loading, router])
+
+  const checkUsername = async (username: string) => {
+    if (!username || username.length < 3) {
+      setUsernameAvailable(null)
+      return
+    }
+
+    setCheckingUsername(true)
+    try {
+      const available = await checkUsernameAvailability(username, user?.uid)
+      setUsernameAvailable(available)
+    } catch (error) {
+      console.error("Error checking username:", error)
+    } finally {
+      setCheckingUsername(false)
+    }
   }
 
-  const handleRegister = (e: React.FormEvent) => {
+  const handleUsernameChange = (value: string) => {
+    // Only allow alphanumeric characters and underscores
+    const sanitized = value.toLowerCase().replace(/[^a-z0-9_]/g, "")
+    setFormData((prev) => ({ ...prev, username: sanitized }))
+
+    // Debounce username check
+    const timeoutId = setTimeout(() => checkUsername(sanitized), 500)
+    return () => clearTimeout(timeoutId)
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    if (!user) return
 
-    if (!isHuman) {
-      alert("Please verify that you are human")
+    if (!formData.username || formData.username.length < 3) {
+      toast.error("Username must be at least 3 characters long")
       return
     }
 
-    if (!agreeToTerms) {
-      alert("Please agree to the Terms of Service")
+    if (usernameAvailable === false) {
+      toast.error("Username is not available")
       return
     }
 
-    if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match")
-      return
-    }
+    setSaving(true)
+    try {
+      const profileData: Partial<UserProfile> = {
+        username: formData.username,
+        displayName: formData.displayName,
+        email: user.email!,
+        bio: formData.bio,
+        skills: formData.skills
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean),
+        github: formData.github,
+        linkedin: formData.linkedin,
+        profileCompleted: true,
+      }
 
-    console.log("Registration attempt:", formData)
-    alert("Account created successfully!")
-    window.location.href = "/dashboard"
+      await updateUserProfile(user.uid, profileData)
+      toast.success("Profile completed successfully!")
+      router.push("/dashboard")
+    } catch (error) {
+      console.error("Error updating profile:", error)
+      toast.error("Failed to complete profile")
+    } finally {
+      setSaving(false)
+    }
   }
 
-  const handleGoogleSignup = () => {
-    console.log("Google signup attempt")
-    alert("Google signup would be handled here")
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+      </div>
+    )
   }
 
-  const handleBackToLogin = () => {
-    window.location.href = "/auth"
+  if (!user) {
+    router.push("/auth/signin")
+    return null
   }
 
   return (
-    <div className="min-h-screen gradient-bg flex flex-col">
-
-      {/* Registration Form */}
-      <div className="flex-1 flex items-start justify-center px-4 mt-15">
-        <div className="w-full max-w-md space-y-8">
-
-          {/* Create Account Title */}
-          <h1 className="text-3xl font-bold text-foreground text-center">Let's Complete your profile</h1>
-
-          <form onSubmit={handleRegister} className="space-y-6">
-
-            {/* OR Divider */}
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-border"></div>
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-4 bg-background text-muted-foreground font-medium">OR</span>
-              </div>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8">
+      <div className="max-w-2xl mx-auto px-4">
+        <Card>
+          <CardHeader className="text-center">
+            <div className="flex justify-center mb-4">
+              <Avatar className="h-20 w-20">
+                <AvatarImage src={user.photoURL || ""} alt={user.displayName || ""} />
+                <AvatarFallback className="text-lg">
+                  <User className="h-8 w-8" />
+                </AvatarFallback>
+              </Avatar>
             </div>
-
-            {/* Username Field */}
-            <div className="space-y-3">
-              <label htmlFor="username" className="block text-sm font-medium text-foreground">
-                Username
-              </label>
-              <Input
-                id="username"
-                type="text"
-                placeholder="Choose a username"
-                value={formData.username}
-                onChange={(e) => handleInputChange("username", e.target.value)}
-                className="w-full glass-effect border-border text-foreground placeholder:text-muted-foreground focus:border-red-500 focus:ring-red-500/20 rounded-xl py-6 text-base"
-                required
-              />
-            </div>
-
-            {/* Email Field */}
-            <div className="space-y-3">
-              <label htmlFor="email" className="block text-sm font-medium text-foreground">
-                Email
-              </label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="Enter your email address"
-                value={formData.email}
-                onChange={(e) => handleInputChange("email", e.target.value)}
-                className="w-full glass-effect border-border text-foreground placeholder:text-muted-foreground focus:border-red-500 focus:ring-red-500/20 rounded-xl py-6 text-base"
-                required
-              />
-            </div>
-
-            {/* Password Field */}
-            <div className="space-y-3">
-              <label htmlFor="password" className="block text-sm font-medium text-foreground">
-                Password
-              </label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="Create a strong password"
-                value={formData.password}
-                onChange={(e) => handleInputChange("password", e.target.value)}
-                className="w-full glass-effect border-border text-foreground placeholder:text-muted-foreground focus:border-red-500 focus:ring-red-500/20 rounded-xl py-6 text-base"
-                required
-              />
-            </div>
-
-            {/* Confirm Password Field */}
-            <div className="space-y-3">
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-foreground">
-                Confirm Password
-              </label>
-              <Input
-                id="confirmPassword"
-                type="password"
-                placeholder="Confirm your password"
-                value={formData.confirmPassword}
-                onChange={(e) => handleInputChange("confirmPassword", e.target.value)}
-                className="w-full glass-effect border-border text-foreground placeholder:text-muted-foreground focus:border-red-500 focus:ring-red-500/20 rounded-xl py-6 text-base"
-                required
-              />
-            </div>
-
-            {/* Terms Agreement */}
-            <div className="flex items-start space-x-3">
-              <Checkbox
-                id="terms"
-                checked={agreeToTerms}
-                onCheckedChange={(checked) => setAgreeToTerms(checked as boolean)}
-                className="border-border data-[state=checked]:bg-emerald-500 data-[state=checked]:border-emerald-500 mt-1 h-5 w-5"
-              />
-              <label htmlFor="terms" className="text-sm text-foreground leading-relaxed">
-                I agree to the{" "}
-                <button
-                  type="button"
-                  className="text-amber-500 hover:text-amber-400 underline transition-colors duration-200 font-medium"
-                >
-                  Terms of Service
-                </button>{" "}
-                and{" "}
-                <button
-                  type="button"
-                  className="text-amber-500 hover:text-amber-400 underline transition-colors duration-200 font-medium"
-                >
-                  Privacy Policy
-                </button>
-              </label>
-            </div>
-
-            {/* hCaptcha */}
-            <div className="flex items-center space-x-4 p-5 glass-effect rounded-xl shadow-md">
-              <Checkbox
-                id="captcha"
-                checked={isHuman}
-                onCheckedChange={(checked) => setIsHuman(checked as boolean)}
-                className="border-border data-[state=checked]:bg-emerald-500 data-[state=checked]:border-emerald-500 h-5 w-5"
-              />
-              <label htmlFor="captcha" className="text-sm text-foreground flex-1 font-medium">
-                I am human
-              </label>
-              <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg flex items-center justify-center shadow-sm">
-                  <span className="text-white text-xs font-bold">h</span>
+            <CardTitle className="text-2xl">Complete Your Profile</CardTitle>
+            <CardDescription>Set up your profile to start participating in challenges and join teams</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div>
+                <Label htmlFor="username">Username *</Label>
+                <div className="relative">
+                  <Input
+                    id="username"
+                    value={formData.username}
+                    onChange={(e) => handleUsernameChange(e.target.value)}
+                    placeholder="your_username"
+                    required
+                    minLength={3}
+                    className="pr-10"
+                  />
+                  {checkingUsername && (
+                    <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary"></div>
+                    </div>
+                  )}
+                  {!checkingUsername && usernameAvailable === true && (
+                    <CheckCircle className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-green-500" />
+                  )}
+                  {!checkingUsername && usernameAvailable === false && (
+                    <AlertCircle className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-red-500" />
+                  )}
                 </div>
-                <span className="text-xs text-muted-foreground font-medium">Captcha</span>
+                {usernameAvailable === false && (
+                  <Alert variant="destructive" className="mt-2">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertDescription>This username is already taken</AlertDescription>
+                  </Alert>
+                )}
+                <p className="text-sm text-gray-600 mt-1">
+                  Username must be at least 3 characters (letters, numbers, and underscores only)
+                </p>
               </div>
-            </div>
 
-            {/* Create Account Button */}
-            <Button
-              type="submit"
-              className="w-full bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 text-base"
-              disabled={!isHuman || !agreeToTerms}
-            >
-              Create Account
-            </Button>
+              <div>
+                <Label htmlFor="displayName">Display Name *</Label>
+                <Input
+                  id="displayName"
+                  value={formData.displayName}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, displayName: e.target.value }))}
+                  placeholder="Your display name"
+                  required
+                />
+              </div>
 
-            {/* Back to Login Button */}
-            <Button
-              type="button"
-              onClick={handleBackToLogin}
-              variant="outline"
-              className="w-full border-border text-foreground hover:bg-muted font-semibold py-6 rounded-xl transition-all duration-300 text-base"
-            >
-              Already have an account?
-            </Button>
-          </form>
-        </div>
+              <div>
+                <Label htmlFor="bio">Bio</Label>
+                <Textarea
+                  id="bio"
+                  value={formData.bio}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, bio: e.target.value }))}
+                  placeholder="Tell us about yourself..."
+                  rows={3}
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="skills">Skills</Label>
+                <Input
+                  id="skills"
+                  value={formData.skills}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, skills: e.target.value }))}
+                  placeholder="JavaScript, Python, React, etc. (comma separated)"
+                />
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <Label htmlFor="github">GitHub Username</Label>
+                  <Input
+                    id="github"
+                    value={formData.github}
+                    onChange={(e) => setFormData((prev) => ({ ...prev, github: e.target.value }))}
+                    placeholder="your-github-username"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="linkedin">LinkedIn Profile</Label>
+                  <Input
+                    id="linkedin"
+                    value={formData.linkedin}
+                    onChange={(e) => setFormData((prev) => ({ ...prev, linkedin: e.target.value }))}
+                    placeholder="linkedin.com/in/your-profile"
+                  />
+                </div>
+              </div>
+
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={saving || usernameAvailable === false || !formData.username || !formData.displayName}
+              >
+                {saving ? "Completing Profile..." : "Complete Profile"}
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
       </div>
     </div>
   )
