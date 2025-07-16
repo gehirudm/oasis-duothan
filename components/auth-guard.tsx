@@ -12,7 +12,7 @@ interface AuthGuardProps {
   adminOnly?: boolean
 }
 
-const ADMIN_EMAILS = ["admin@example.com"] // Add admin emails here
+const ADMIN_EMAILS = ["admin@example.com","nimsith.xyz@gmail.com"] // Add admin emails here
 
 export function AuthGuard({ children, adminOnly = false }: AuthGuardProps) {
   const { user, loading, signInWithGoogle } = useAuth()

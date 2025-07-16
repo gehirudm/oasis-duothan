@@ -194,3 +194,22 @@ h1, h2{
     0 0 10px #39ff14,
     0 0 20px #39ff14;
 }
+
+.gradient-box {
+  background: linear-gradient(135deg, #39ff14 0%, #00ffff 100%);
+  padding: 1.5rem;
+  border-radius: 12px;
+  color: #0f0f1b;
+  font-weight: 600;
+  box-shadow:
+    0 0 5px #39ff14,
+    0 0 15px #00ffff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gradient-box:hover {
+  transform: scale(1.02);
+  box-shadow:
+    0 0 10px #39ff14,
+    0 0 20px #00ffff;
+}
