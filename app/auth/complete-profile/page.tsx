@@ -86,11 +86,11 @@ export default function CompleteProfilePage() {
   }
 
   const handleUsernameChange = (value: string) => {
-    // Only allow alphanumeric characters and underscores
+    
     const sanitized = value.toLowerCase().replace(/[^a-z0-9_]/g, "")
     setFormData((prev) => ({ ...prev, username: sanitized }))
 
-    // Debounce username check
+    
     const timeoutId = setTimeout(() => checkUsername(sanitized), 500)
     return () => clearTimeout(timeoutId)
   }

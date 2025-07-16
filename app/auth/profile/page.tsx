@@ -35,7 +35,7 @@ export default function ProfilePage() {
       if (!user) return
 
       try {
-        // Fetch user profile
+       
         const userProfile = await getUserProfile(user.uid)
         if (userProfile) {
           setProfile(userProfile)
@@ -47,7 +47,7 @@ export default function ProfilePage() {
             linkedin: userProfile.linkedin || "",
           })
         } else {
-          // Initialize with user data from auth
+          
           setFormData({
             displayName: user.displayName || "",
             bio: "",
@@ -91,7 +91,7 @@ export default function ProfilePage() {
       await updateUserProfile(user.uid, profileData)
       toast.success("Profile updated successfully!")
 
-      // Refresh profile data
+      
       const updatedProfile = await getUserProfile(user.uid)
       setProfile(updatedProfile)
     } catch (error) {
@@ -122,7 +122,7 @@ export default function ProfilePage() {
           </div>
 
           <div className="grid lg:grid-cols-3 gap-8">
-            {/* Profile Form */}
+            
             <div className="lg:col-span-2">
               <Card>
                 <CardHeader>
@@ -204,9 +204,9 @@ export default function ProfilePage() {
               </Card>
             </div>
 
-            {/* Profile Summary & Teams */}
+            
             <div className="space-y-6">
-              {/* Profile Summary */}
+              
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center">
@@ -245,7 +245,7 @@ export default function ProfilePage() {
                 </CardContent>
               </Card>
 
-              {/* My Teams */}
+              
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center">

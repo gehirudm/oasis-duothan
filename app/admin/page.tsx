@@ -20,7 +20,7 @@ export default function AdminPage() {
         const hackathonData = await getHackathons()
         setHackathons(hackathonData)
 
-        // Fetch team counts for each hackathon
+        
         const counts: Record<string, number> = {}
         for (const hackathon of hackathonData) {
           if (hackathon.id) {
@@ -74,7 +74,7 @@ export default function AdminPage() {
             </div>
           </div>
 
-          {/* Stats Cards */}
+          
           <div className="grid md:grid-cols-3 gap-6 mb-8">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -109,7 +109,7 @@ export default function AdminPage() {
             </Card>
           </div>
 
-          {/* Hackathons List */}
+          
           <Card>
             <CardHeader>
               <CardTitle>All Hackathons</CardTitle>

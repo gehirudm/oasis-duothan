@@ -34,13 +34,13 @@ export default function RegisterPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch hackathon details
+        
         const hackathonDoc = await getDoc(doc(db, "hackathons", hackathonId))
         if (hackathonDoc.exists()) {
           setHackathon({ id: hackathonDoc.id, ...hackathonDoc.data() } as Hackathon)
         }
 
-        // Check if user already has a team for this hackathon
+        
         if (user) {
           const team = await getUserTeam(hackathonId, user.uid)
           setExistingTeam(team)

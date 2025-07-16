@@ -159,7 +159,7 @@ export default function HackathonTeamsPage() {
             </Card>
           </div>
 
-          {/* Search and Teams List */}
+          
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
@@ -267,7 +267,7 @@ export default function HackathonTeamsPage() {
                             </div>
                           </div>
 
-                          {/* Team Members */}
+                         
                           {team.members.length > 0 && (
                             <div>
                               <h4 className="font-semibold mb-3">Team Members ({team.members.length})</h4>
@@ -297,7 +297,7 @@ export default function HackathonTeamsPage() {
                             </div>
                           )}
 
-                          {/* GitHub Submission */}
+                          
                           {team.githubLink && (
                             <div>
                               <h4 className="font-semibold mb-3">Buildathon Submission</h4>
@@ -321,7 +321,7 @@ export default function HackathonTeamsPage() {
                             </div>
                           )}
 
-                          {/* Progress Summary */}
+                          
                           <div className="pt-4 border-t">
                             <div className="grid md:grid-cols-3 gap-4 text-sm">
                               <div>

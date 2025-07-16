@@ -20,11 +20,11 @@ export default async function HackathonDetailsPage({ params }: HackathonPageProp
     notFound()
   }
 
-  // Fetch challenges and leaderboard data
+  
   const challenges = await getHackathonChallenges(params.id)
   const leaderboard = await getHackathonLeaderboard(params.id)
 
-  // Sort leaderboard by total score (descending)
+  
   const sortedLeaderboard = [...leaderboard].sort((a, b) => (b.totalScore || 0) - (a.totalScore || 0))
 
   const getRankBadge = (rank: number) => {
@@ -114,7 +114,7 @@ export default async function HackathonDetailsPage({ params }: HackathonPageProp
           </CardContent>
         </Card>
 
-        {/* Tabs for Challenges and Leaderboard */}
+        
         <Tabs defaultValue="challenges" className="space-y-6">
           <TabsList className="grid w-full md:w-[400px] grid-cols-2">
             <TabsTrigger value="challenges">
@@ -127,7 +127,7 @@ export default async function HackathonDetailsPage({ params }: HackathonPageProp
             </TabsTrigger>
           </TabsList>
 
-          {/* Challenges Tab */}
+          
           <TabsContent value="challenges">
             <Card>
               <CardHeader>
@@ -179,7 +179,7 @@ export default async function HackathonDetailsPage({ params }: HackathonPageProp
             </Card>
           </TabsContent>
 
-          {/* Leaderboard Tab */}
+          
           <TabsContent value="leaderboard">
             <Card>
               <CardHeader>
@@ -234,7 +234,7 @@ export default async function HackathonDetailsPage({ params }: HackathonPageProp
           </TabsContent>
         </Tabs>
 
-        {/* Registration CTA */}
+       
         {isRegistrationOpen && (
           <Card className="bg-primary/5 border-primary/20">
             <CardContent className="flex flex-col md:flex-row items-center justify-between gap-4 py-6">

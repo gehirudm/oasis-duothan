@@ -54,7 +54,7 @@ export default function DashboardPage() {
             <p className="text-gray-600">Welcome back! Here's what's happening with your challenges and teams.</p>
           </div>
 
-          {/* Stats Cards */}
+          
           <div className="grid md:grid-cols-4 gap-6 mb-8">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -98,7 +98,7 @@ export default function DashboardPage() {
           </div>
 
           <div className="grid lg:grid-cols-2 gap-8">
-            {/* Active Challenges */}
+            
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center">
@@ -139,7 +139,7 @@ export default function DashboardPage() {
               </CardContent>
             </Card>
 
-            {/* My Teams */}
+           
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center">

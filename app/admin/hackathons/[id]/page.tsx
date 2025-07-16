@@ -143,7 +143,7 @@ export default function HackathonOverviewPage() {
             </div>
           </div>
 
-          {/* Stats Cards */}
+          
           <div className="grid md:grid-cols-4 gap-6 mb-8">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -186,7 +186,7 @@ export default function HackathonOverviewPage() {
             </Card>
           </div>
 
-          {/* Hackathon Details */}
+          
           <div className="grid lg:grid-cols-3 gap-8 mb-8">
             <Card>
               <CardHeader>
@@ -276,7 +276,7 @@ export default function HackathonOverviewPage() {
             </Card>
           </div>
 
-          {/* Tabs for Leaderboard and Challenges */}
+          
           <Tabs defaultValue="leaderboard" className="space-y-6">
             <TabsList>
               <TabsTrigger value="leaderboard">Leaderboard</TabsTrigger>
