@@ -10,6 +10,7 @@ import {
   orderBy,
   Timestamp,
   getDoc,
+  serverTimestamp,
 } from "firebase/firestore"
 import { db } from "./firebase"
 
@@ -144,6 +145,81 @@ export const updateChallenge = async (id: string, updates: Partial<Challenge>) =
 export const deleteChallenge = async (id: string) => {
   await deleteDoc(doc(db, "challenges", id))
 }
+
+/**
+ * Get all buildathon submissions for a challenge
+ */
+export const getBuildathonSubmissions = async (challengeId: string) => {
+  try {
+    const submissionsQuery = query(
+      collection(db, "buildathonSubmissions"),
+      where("challengeId", "==", challengeId),
+      orderBy("createdAt", "desc")
+    );
+    
+    const submissionsSnap = await getDocs(submissionsQuery);
+    
+    return submissionsSnap.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+  } catch (error) {
+    console.error("Error getting buildathon submissions:", error);
+    throw error;
+  }
+};
+
+/**
+ * Update a buildathon submission
+ */
+export const updateBuildathonSubmission = async (
+  submissionId: string, 
+  data: {
+    score?: number;
+    feedback?: string;
+    reviewed?: boolean;
+  }
+) => {
+  try {
+    const submissionRef = doc(db, "buildathonSubmissions", submissionId);
+    
+    await updateDoc(submissionRef, {
+      ...data,
+      updatedAt: serverTimestamp()
+    });
+    
+    return true;
+  } catch (error) {
+    console.error("Error updating buildathon submission:", error);
+    throw error;
+  }
+};
+
+/**
+ * Get all teams that have submitted buildathon projects for a hackathon
+ */
+export const getTeamsWithBuildathonSubmissions = async (hackathonId: string) => {
+  try {
+    // First get all teams for this hackathon
+    const teamsQuery = query(
+      collection(db, "teams"),
+      where("hackathonId", "==", hackathonId)
+    );
+    
+    const teamsSnap = await getDocs(teamsQuery);
+    const teams = teamsSnap.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+    
+    // Filter teams that have GitHub links (buildathon submissions)
+    // @ts-ignore
+    return teams.filter(team => team.githubLink);
+  } catch (error) {
+    console.error("Error getting teams with buildathon submissions:", error);
+    throw error;
+  }
+};
 
 // Team operations
 export const createTeam = async (
