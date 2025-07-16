@@ -122,10 +122,10 @@ body {
 }
 
 .bg-grid-animate {
-  background-color: #0f0f1b;
+  background-color: #ffffff;
   background-image:
-    linear-gradient(#222 1px, transparent 1px),
-    linear-gradient(90deg, #222 1px, transparent 1px);
+    linear-gradient(#ececec 1px, transparent 1px),
+    linear-gradient(90deg, #eeeeee 1px, transparent 1px);
   background-size: 40px 40px;
   animation: gridMove 10s linear infinite;
 }
@@ -178,7 +178,7 @@ h1, h2{
 }
 
 .neon-box {
-  background-color: #1a1a2e96; /* dark card-like bg */
+  background-color: #fefefeb8; /* dark card-like bg */
   border: 2px solid #39ff14; /* neon green border */
   border-radius: 12px;
   padding: 1.5rem;
@@ -212,4 +212,14 @@ h1, h2{
   box-shadow:
     0 0 10px #39ff14,
     0 0 20px #00ffff;
+}
+
+
+.navbar-white-glow {
+  background-color: #ffffff;
+  color: #000000;
+  border-bottom: 2px solid #39ff14;
+  box-shadow: 0 0 10px #39ff14;
+  font-family: 'Orbitron', sans-serif;
+  z-index: 50;
 }
