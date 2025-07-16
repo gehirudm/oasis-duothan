@@ -5,25 +5,25 @@ import Link from "next/link"
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-grid text-white flex flex-col items-center justify-center">
+    <div className="min-h-screen bg-grid-animate text-white flex flex-col items-center justify-center">
       {/* Hero Section */}
       <section className="py-20 px-4">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-5xl font-bold text-white-900 mb-6">
-            Welcome to <span className="text-5xl neon-text mb-4">HackPlatforms</span>
+          <h1 className="text-5xl font-orbitron text-white-900 mb-6">
+            Welcome to <span className="text-5xl neon-text glitch mb-4">OASIS-CTF</span>
           </h1>
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+          <p className="font-geist text-xl text-white-600 mb-8 max-w-2xl mx-auto ">
             The ultimate platform for organizing and participating in hackathons. Create teams, manage events, and build
             amazing projects together.
           </p>
           <div className="space-x-4">
             <Link href="/hackathons">
-              <Button size="lg" className="neon-btn">
+              <Button variant="outline" size="lg" className="neon-btn font-orbitron">
                 View Hackathons
               </Button>
             </Link>
             <Link href="/admin">
-              <Button variant="outline" size="lg" className="neon-btn bg-transparent">
+              <Button variant="outline" size="lg" className="neon-btn font-orbitron">
                 Admin Dashboard
               </Button>
             </Link>
