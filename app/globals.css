@@ -57,3 +57,57 @@
     @apply bg-background text-foreground;
   }
 }
+
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
+
+/* Base font */
+body {
+  font-family: 'Orbitron', sans-serif;
+}
+
+/* Neon Green Text */
+.neon-text {
+  color: #39ff14;
+  text-shadow:
+    0 0 5px #39ff14,
+    0 0 10px #39ff14,
+    0 0 20px #39ff14;
+}
+
+/* Glowing Button */
+.neon-btn {
+  background-color: #39ff14;
+  color: #000;
+  font-weight: bold;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  box-shadow:
+    0 0 10px #39ff14,
+    0 0 20px #39ff14;
+  transition: box-shadow 0.3s ease;
+}
+
+.neon-btn:hover {
+  box-shadow:
+    0 0 15px #39ff14,
+    0 0 30px #39ff14;
+}
+
+/* Glowing container */
+.neon-box {
+  background-color: #1a1a2e;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 0 20px rgba(57, 255, 20, 0.2);
+}
+
+/* Futuristic grid background */
+.bg-grid {
+  background-color: #0f0f1b;
+  background-image:
+    linear-gradient(#222 1px, transparent 1px),
+    linear-gradient(90deg, #222 1px, transparent 1px);
+  background-size: 40px 40px;
+}
