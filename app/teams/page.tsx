@@ -57,7 +57,7 @@ export default function TeamsPage() {
       await acceptTeamInvitation(invitationId, user.uid, user.displayName || "", user.email!)
       toast.success("Invitation accepted successfully!")
 
-      // Refresh data
+      
       const [userTeams, userInvitations] = await Promise.all([getUserTeams(user.uid), getTeamInvitations(user.email!)])
       setTeams(userTeams)
       setInvitations(userInvitations)
@@ -75,7 +75,7 @@ export default function TeamsPage() {
       await declineTeamInvitation(invitationId)
       toast.success("Invitation declined")
 
-      // Refresh invitations
+      
       const userInvitations = await getTeamInvitations(user?.email!)
       setInvitations(userInvitations)
     } catch (error) {
@@ -163,7 +163,7 @@ export default function TeamsPage() {
             </Card>
           )}
 
-          {/* My Teams */}
+          
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center">
@@ -229,7 +229,7 @@ export default function TeamsPage() {
                             </div>
                           </div>
 
-                          {/* Team Members */}
+                          
                           {team.members.length > 0 && (
                             <div>
                               <h4 className="font-semibold text-sm mb-2">Team Members ({team.members.length})</h4>
