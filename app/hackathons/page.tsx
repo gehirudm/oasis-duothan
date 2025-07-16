@@ -85,9 +85,14 @@ export default function HackathonsPage() {
                         </span>
                       </div>
                     </div>
-                    <Link href={`/hackathons/${hackathon.id}/register`}>
-                      <Button className="w-full">Register Team</Button>
-                    </Link>
+                    <div className="flex gap-2">
+                      <Link href={`/hackathons/${hackathon.id}`}>
+                        <Button variant="secondary" className="w-full">Details</Button>
+                      </Link>
+                      <Link href={`/hackathons/${hackathon.id}/register`}>
+                        <Button className="w-full">Register</Button>
+                      </Link>
+                    </div>
                   </CardContent>
                 </Card>
               ))}
