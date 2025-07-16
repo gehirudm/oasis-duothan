@@ -3,13 +3,13 @@ import { getAuth, GoogleAuthProvider } from "firebase/auth"
 import { getFirestore } from "firebase/firestore"
 
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-}
+  apiKey: "AIzaSyDonvUuDjHH9HJ8Nv6jXDA5rK3AlW3eB-c",
+  authDomain: "oasis-duothan.firebaseapp.com",
+  projectId: "oasis-duothan",
+  storageBucket: "oasis-duothan.firebasestorage.app",
+  messagingSenderId: "352189618557",
+  appId: "1:352189618557:web:a066b4acf91a9c0ce39414"
+};
 
 const app = initializeApp(firebaseConfig)
 export const auth = getAuth(app)

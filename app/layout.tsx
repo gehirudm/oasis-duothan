@@ -10,7 +10,6 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "HackPlatform - Hackathon Management System",
   description: "A comprehensive platform for managing hackathons and team registrations",
-    generator: 'v0.dev'
 }
 
 export default function RootLayout({
