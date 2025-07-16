@@ -6,7 +6,7 @@ import Link from "next/link"
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-grid-animate text-black flex flex-col items-center justify-center">
-      {/* Hero Section */}
+      
       <section className="py-20 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-5xl font-orbitron text-black-900 mb-6">
@@ -31,7 +31,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Features Section */}
+     
       <section className="py-4 px-8">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl font-bold text-center mb-12">Platform Features</h2>
@@ -54,7 +54,7 @@ export default function HomePage() {
                 <CardTitle className="font-orbitron text-black">Team Registration</CardTitle>
               </CardHeader>
               <CardContent>
-                <CardDescription><p className="text-center">Easy team formation with member management and role assignments.</p></CardDescription>
+                <CardDescription><p className="text-center">Easy team formation with member management.</p></CardDescription>
               </CardContent>
             </Card>
 
@@ -72,10 +72,10 @@ export default function HomePage() {
             <Card className="neon-box">
               <CardHeader className="text-center">
                 <Award className="h-12 w-12 text-black mx-auto mb-4" />
-                <CardTitle className="font-orbitron text-black">Admin Dashboard</CardTitle>
+                <CardTitle className="font-orbitron text-black">Team Ranking</CardTitle>
               </CardHeader>
               <CardContent>
-                <CardDescription><p className="text-center">Comprehensive admin tools for managing events, teams, and participants.</p>
+                <CardDescription><p className="text-center">Competitive challenges to complete by teams.</p>
                   
                 </CardDescription>
               </CardContent>
@@ -84,7 +84,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* CTA Section */}
+      
       <br></br>
       <br></br>
       <br></br>
