@@ -1,6 +1,8 @@
 import { getHackathonById } from "@/lib/firestore"
 import { notFound } from "next/navigation"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
 interface HackathonPageProps {
   params: {
@@ -17,7 +19,7 @@ export default async function HackathonDetailsPage({ params }: HackathonPageProp
 
   return (
     <div className="min-h-screen bg-gray-50 py-10 px-4">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-4xl mx-auto space-y-4">
         <Card>
           <CardHeader>
             <CardTitle className="text-3xl font-bold">{hackathon.title}</CardTitle>
@@ -30,6 +32,12 @@ export default async function HackathonDetailsPage({ params }: HackathonPageProp
             <p><strong>Max Team Size:</strong> {hackathon.maxTeamSize}</p>
           </CardContent>
         </Card>
+
+        <div className="text-center">
+          <Link href={`/hackathons/${params.id}/leaderboard`}>
+            <Button variant="default">View Leaderboard</Button>
+          </Link>
+        </div>
       </div>
     </div>
   )
